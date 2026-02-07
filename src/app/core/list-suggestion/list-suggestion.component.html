@@ -1,0 +1,36 @@
+<div class="suggestions-container">
+  <h1 class="page-title">Liste des suggestions</h1>
+
+  <div class="search-container">
+    <input
+      class="search-input"
+      ngModel
+      placeholder="Rechercher une suggestion"
+      (ngModelChange)="searchTitleCategory($event)">
+  </div>
+
+  <div class="suggestions-list">
+    <div *ngFor="let suggestion of suggestions; let i=index" class="suggestion-card">
+      <div class="card-header">
+        <h2 class="suggestion-title">{{suggestion.title}}</h2>
+        <span class="category-badge" [ngClass]="getCategoryClass(suggestion.category)">{{suggestion.category}}</span>
+        <span class="suggestion-date">{{suggestion.date | date:'dd MMM yyyy'}}</span>
+      </div>
+
+      <p class="suggestion-description">{{suggestion.description}}</p>
+
+      <div class="card-footer">
+        <span class="status-badge" [ngClass]="getStatusClass(suggestion.status)">{{getStatusLabel(suggestion.status)}}</span>
+
+        <div class="action-buttons" *ngIf='suggestion.status != "refusee"'>
+          <button class="like-btn" (click)="like(i)">
+            <span class="like-icon">👍</span> Like {{suggestion.nbLikes}}
+          </button>
+          <button class="favorite-btn" (click)="addToFavorites(suggestion)">
+            <span class="heart-icon">♡</span> Ajouter aux favoris
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
