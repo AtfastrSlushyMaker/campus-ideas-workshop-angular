@@ -1,12 +1,18 @@
 <div class="suggestions-container">
-  <h1 class="page-title">Liste des suggestions</h1>
+  <h1 class="page-title">
+    <i class="fa-solid fa-list-check title-icon" aria-hidden="true"></i>
+    Liste des suggestions
+  </h1>
 
   <div class="search-container">
-    <input
-      class="search-input"
-      ngModel
-      placeholder="Rechercher une suggestion"
-      (ngModelChange)="searchTitleCategory($event)">
+    <div class="search-field">
+      <i class="fa-solid fa-magnifying-glass search-icon" aria-hidden="true"></i>
+      <input
+        class="search-input"
+        [(ngModel)]="searchTerm"
+        placeholder="Rechercher une suggestion"
+        (ngModelChange)="searchTitleCategory($event)">
+    </div>
   </div>
 
   <div class="suggestions-list">
@@ -24,12 +30,18 @@
 
         <div class="action-buttons" *ngIf='suggestion.status != "refusee"'>
           <button class="like-btn" (click)="like(i)">
-            <span class="like-icon">👍</span> Like {{suggestion.nbLikes}}
+            <i class="fa-solid fa-thumbs-up btn-icon" aria-hidden="true"></i>
+            Like {{suggestion.nbLikes}}
           </button>
           <button class="favorite-btn" (click)="addToFavorites(suggestion)">
-            <span class="heart-icon">♡</span> Ajouter aux favoris
+            <i class="fa-regular fa-heart btn-icon" aria-hidden="true"></i>
+            Ajouter aux favoris
           </button>
         </div>
+        <button class="details-btn" (click)="viewDetails(suggestion.id)">
+            <i class="fa-solid fa-magnifying-glass btn-icon" aria-hidden="true"></i>
+            Voir les details
+          </button>
       </div>
     </div>
   </div>

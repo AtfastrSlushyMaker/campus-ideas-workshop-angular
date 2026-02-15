@@ -1,0 +1,54 @@
+<div class="details-page" *ngIf="suggestion; else notFound">
+	<div class="details-hero">
+		<span class="details-kicker">
+			<i class="fa-solid fa-circle-info" aria-hidden="true"></i>
+			Suggestion
+		</span>
+		<h1 class="details-title">{{ suggestion.title }}</h1>
+		<div class="details-meta">
+			<span class="category-badge" [ngClass]="getCategoryClass(suggestion.category)">
+				{{ suggestion.category }}
+			</span>
+			<span class="status-badge" [ngClass]="getStatusClass(suggestion.status)">
+				{{ getStatusLabel(suggestion.status) }}
+			</span>
+			<span class="details-date">
+				<i class="fa-regular fa-calendar" aria-hidden="true"></i>
+				{{ suggestion.date | date:'dd MMM yyyy' }}
+			</span>
+		</div>
+	</div>
+
+	<div class="details-card">
+		<h2 class="details-section-title">
+			<i class="fa-regular fa-file-lines" aria-hidden="true"></i>
+			Description
+		</h2>
+		<p class="details-description">{{ suggestion.description }}</p>
+
+		<div class="details-actions">
+			<a class="back-link" routerLink="/suggestions">
+				<i class="fa-solid fa-arrow-left" aria-hidden="true"></i>
+				Back to list
+			</a>
+		</div>
+	</div>
+</div>
+
+<ng-template #notFound>
+	<div class="details-page">
+		<div class="details-card">
+			<h1 class="details-title">
+				<i class="fa-solid fa-triangle-exclamation" aria-hidden="true"></i>
+				Suggestion introuvable
+			</h1>
+			<p class="details-description">L'element demande n'existe pas ou a ete supprime.</p>
+			<div class="details-actions">
+				<a class="back-link" routerLink="/suggestions">
+					<i class="fa-solid fa-arrow-left" aria-hidden="true"></i>
+					Back to list
+				</a>
+			</div>
+		</div>
+	</div>
+</ng-template>
