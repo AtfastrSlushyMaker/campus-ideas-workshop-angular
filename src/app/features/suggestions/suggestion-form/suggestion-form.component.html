@@ -1,0 +1,45 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()" class="suggestion-form">
+  <h2>Nouvelle suggestion</h2>
+
+  <div class="form-group">
+    <label for="title">Titre</label>
+    <input id="title" formControlName="title" />
+    <div class="error" *ngIf="f['title'].invalid && (f['title'].dirty || f['title'].touched)">
+      <small *ngIf="f['title'].errors?.['required']">Le titre est requis.</small>
+      <small *ngIf="f['title'].errors?.['minlength']">Au moins 5 caractères.</small>
+      <small *ngIf="f['title'].errors?.['pattern']">Commence par une majuscule et ne contient que des lettres.</small>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="description">Description</label>
+    <textarea id="description" formControlName="description"></textarea>
+    <div class="error" *ngIf="f['description'].invalid && (f['description'].dirty || f['description'].touched)">
+      <small *ngIf="f['description'].errors?.['required']">La description est requise.</small>
+      <small *ngIf="f['description'].errors?.['minlength']">Minimum 30 caractères.</small>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="category">Catégorie</label>
+    <select id="category" formControlName="category">
+      <option value="">-- Sélectionner --</option>
+      <option *ngFor="let c of categories" [value]="c">{{ c }}</option>
+    </select>
+    <div class="error" *ngIf="f['category'].invalid && (f['category'].dirty || f['category'].touched)">
+      <small>La catégorie est obligatoire.</small>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="date">Date</label>
+    <input id="date" type="date" formControlName="date" readonly />
+  </div>
+
+  <div class="form-group">
+    <label for="status">Statut</label>
+    <input id="status" formControlName="status" readonly />
+  </div>
+
+  <button type="submit" [disabled]="form.invalid">Soumettre</button>
+</form>

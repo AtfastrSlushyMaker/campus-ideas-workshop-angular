@@ -18,6 +18,13 @@
   gap: 0.6rem;
 }
 
+.add-suggestion-btn {
+  margin-left: 1rem;
+  padding: 0.4rem 0.8rem;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
 .search-container {
   margin-bottom: 2rem;
 }

@@ -71,5 +71,9 @@ export class ListSuggestionComponent implements OnInit {
     this.router.navigate(['/suggestions', id]);
   }
 
+  goToAdd(): void {
+    this.router.navigate(['/suggestions', 'add']);
+  }
+
 }
 
