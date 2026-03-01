@@ -1,27 +1,42 @@
+import { SuggestionService } from './../../../core/Services/suggestion.service';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Suggestion } from '../../../models/suggestion';
-import { SUGGESTIONS } from '../suggestions.data';
 
 @Component({
   selector: 'app-list-suggestion',
   templateUrl: './list-suggestion.component.html',
-  styleUrl: './list-suggestion.component.css'
+  styleUrls: ['./list-suggestion.component.css']
 })
 export class ListSuggestionComponent implements OnInit {
   suggestions: Suggestion[] = [];
   searchTerm = '';
   like(index: number) {
-    this.suggestions[index].nbLikes++;
+    const suggestion = this.suggestions[index];
+    suggestion.nbLikes++;
+    // persist change to backend
+    this.suggestionService.updateLikes(suggestion.id, suggestion.nbLikes).subscribe({
+      next: () => {},
+      error: () => { /* ignore for now or show error */ }
+    });
   }
   favorites: Suggestion[] = [];
   allSuggestions: Suggestion[] = [];
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private suggestionService: SuggestionService) {}
 
-  ngOnInit() {
-    this.suggestions = [...SUGGESTIONS];
-    this.allSuggestions = [...SUGGESTIONS];
+  ngOnInit(): void {
+    this.suggestionService.getSuggestionsList().subscribe({
+      next: (data) => {
+        console.log('Loaded suggestions:', data);
+        this.suggestions = [...data];
+        this.allSuggestions = [...data];
+      },
+      error: () => {
+        // fallback to local list if backend fails
+        this.suggestions = [...this.allSuggestions];
+      }
+    });
   }
 
   addToFavorites(suggestion: Suggestion) {

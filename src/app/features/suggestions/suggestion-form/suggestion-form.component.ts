@@ -2,12 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Suggestion } from '../../../models/suggestion';
-import { SUGGESTIONS } from '../suggestions.data';
+import { SuggestionService } from '../../../core/Services/suggestion.service';
 
 @Component({
   selector: 'app-suggestion-form',
   templateUrl: './suggestion-form.component.html',
-  styleUrl: './suggestion-form.component.css'
+  styleUrls: ['./suggestion-form.component.css']
 })
 export class SuggestionFormComponent implements OnInit {
   form!: FormGroup;
@@ -24,7 +24,7 @@ export class SuggestionFormComponent implements OnInit {
     'Autre'
   ];
 
-  constructor(private fb: FormBuilder, private router: Router) {}
+  constructor(private fb: FormBuilder, private router: Router, private suggestionService: SuggestionService) {}
 
   ngOnInit(): void {
     this.form = this.fb.group({
@@ -53,19 +53,28 @@ export class SuggestionFormComponent implements OnInit {
       return;
     }
 
-    const maxId = SUGGESTIONS.reduce((acc, s) => (s.id > acc ? s.id : acc), 0);
-    const newSuggestion: Suggestion = {
-      id: maxId + 1,
+    const newSuggestion: Partial<Suggestion> = {
       title: this.f['title'].value,
       description: this.f['description'].value,
       category: this.f['category'].value,
-      date: new Date(),
-      status: 'en_attente',
-      nbLikes: 0
+      status: 'en_attente'
     };
 
-    SUGGESTIONS.push(newSuggestion);
-    this.router.navigate(['/suggestions']);
+    this.suggestionService.addSuggestion(newSuggestion).subscribe({
+      next: (res) => {
+        console.log('Add suggestion response:', res);
+        const ok = res && (res.success || res.id || res.insertId);
+        if (ok) {
+          this.router.navigate(['/suggestions']);
+          return;
+        }
+        alert('La suggestion n\'a pas pu être ajoutée (réponse inattendue).');
+      },
+      error: (err) => {
+        console.error('Add suggestion error:', err);
+        alert('Erreur lors de l\'ajout de la suggestion. Vérifiez le serveur backend et MySQL.');
+      }
+    });
   }
 
   private formatDate(date: Date): string {
