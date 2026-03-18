@@ -64,9 +64,7 @@ export class SuggestionService {
   }
 
   getSuggestionById(id: number): Observable<Suggestion> {
-    return this.http.get<any>(`${this.suggestionUrl}/${id}`).pipe(
-      map((res) => (res && res.suggestion ? res.suggestion : res))
-    );
+    return this.http.get<any>(this.suggestionUrl + '/' + id);
   }
 
   addSuggestion(suggestion: Partial<Suggestion>): Observable<any> {
